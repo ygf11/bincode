@@ -30,6 +30,9 @@ impl VecWriter {
 
 impl enc::write::Writer for VecWriter {
     fn write(&mut self, bytes: &[u8]) -> Result<(), EncodeError> {
+        self.inner
+            .try_reserve(bytes.len())
+            .map_err(|inner| EncodeError::OutOfMemory { inner })?;
         self.inner.extend_from_slice(bytes);
         Ok(())
     }
@@ -52,7 +55,11 @@ where
 {
     fn decode<D: Decoder>(mut decoder: D) -> Result<Self, DecodeError> {
         let len = crate::de::decode_slice_len(&mut decoder)?;
-        let mut map = BinaryHeap::with_capacity(len);
+        let mut map = BinaryHeap::new();
+        // TODO:
+        // map.try_reserve(len).map_err(|inner| DecodeError::OutOfMemory { inner })?;
+        map.reserve(len);
+
         for _ in 0..len {
             let key = T::decode(&mut decoder)?;
             map.push(key);
@@ -140,7 +147,9 @@ where
 {
     fn decode<D: Decoder>(mut decoder: D) -> Result<Self, DecodeError> {
         let len = crate::de::decode_slice_len(&mut decoder)?;
-        let mut map = VecDeque::with_capacity(len);
+        let mut map = VecDeque::new();
+        map.try_reserve(len)
+            .map_err(|inner| DecodeError::OutOfMemory { inner })?;
         for _ in 0..len {
             let key = T::decode(&mut decoder)?;
             map.push_back(key);
@@ -168,7 +177,9 @@ where
 {
     fn decode<D: Decoder>(mut decoder: D) -> Result<Self, DecodeError> {
         let len = crate::de::decode_slice_len(&mut decoder)?;
-        let mut vec = Vec::with_capacity(len);
+        let mut vec = Vec::new();
+        vec.try_reserve(len)
+            .map_err(|inner| DecodeError::OutOfMemory { inner })?;
         for _ in 0..len {
             vec.push(T::decode(&mut decoder)?);
         }

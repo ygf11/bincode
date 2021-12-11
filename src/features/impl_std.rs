@@ -369,7 +369,10 @@ where
 {
     fn decode<D: Decoder>(mut decoder: D) -> Result<Self, DecodeError> {
         let len = crate::de::decode_slice_len(&mut decoder)?;
-        let mut map = HashMap::with_capacity(len);
+        let mut map = HashMap::new();
+        map.try_reserve(len)
+            .map_err(|inner| DecodeError::OutOfMemory { inner })?;
+
         for _ in 0..len {
             let k = K::decode(&mut decoder)?;
             let v = V::decode(&mut decoder)?;
