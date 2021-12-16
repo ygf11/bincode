@@ -897,3 +897,15 @@ fn test_byte_vec_struct() {
 
     the_same(byte_struct);
 }
+
+#[test]
+fn test_byte_vec_struct1() {
+    let mut buf = [0u8; 10];
+    let buf_ref = buf.as_mut();
+    let config = bincode::DefaultOptions::new().with_varint_encoding()
+    .with_varint_length_encoding();
+    config.serialize_into(buf_ref, &0u8);
+}
+
+
+
