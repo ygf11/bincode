@@ -91,7 +91,6 @@ impl<'de, R: BincodeRead<'de>, O: Options> Deserializer<R, O> {
     }
 
     fn read_vec(&mut self) -> Result<Vec<u8>> {
-        // let len = O::IntEncoding::deserialize_len(self)?;
         let len = O::LengthEncoding::deserialize_len(self)?;
         self.read_bytes(len as u64)?;
         self.reader.get_byte_buffer(len)
@@ -233,7 +232,6 @@ where
     where
         V: serde::de::Visitor<'de>,
     {
-        // let len = O::IntEncoding::deserialize_len(self)?;
         let len = O::LengthEncoding::deserialize_len(self)?;
         self.read_bytes(len as u64)?;
         self.reader.forward_read_str(len, visitor)
@@ -250,7 +248,6 @@ where
     where
         V: serde::de::Visitor<'de>,
     {
-        // let len = O::IntEncoding::deserialize_len(self)?;
         let len = O::LengthEncoding::deserialize_len(self)?;
         self.read_bytes(len as u64)?;
         self.reader.forward_read_bytes(len, visitor)
@@ -348,7 +345,6 @@ where
     where
         V: serde::de::Visitor<'de>,
     {
-        // let len = O::IntEncoding::deserialize_len(self)?;
         let len = O::LengthEncoding::deserialize_len(self)?;
 
         self.deserialize_tuple(len, visitor)
@@ -395,7 +391,6 @@ where
             }
         }
 
-        // let len = O::IntEncoding::deserialize_len(self)?;
         let len = O::LengthEncoding::deserialize_len(self)?;
 
         visitor.visit_map(Access {

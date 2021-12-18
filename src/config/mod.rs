@@ -416,7 +416,7 @@ impl<O: Options, T: TrailingBytes + 'static> InternalOptions for WithOtherTraili
     }
 }
 
-impl<O: Options,I:IntEncoding + 'static> InternalOptions for WithOtherLengthEncoding<O, I> {
+impl<O: Options, I: IntEncoding + 'static> InternalOptions for WithOtherLengthEncoding<O, I> {
     type Limit = O::Limit;
     type Endian = O::Endian;
     type IntEncoding = O::IntEncoding;
