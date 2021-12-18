@@ -250,11 +250,13 @@ impl<O: Options> SizeChecker<O> {
 
     fn add_discriminant(&mut self, idx: u32) -> Result<()> {
         let bytes = O::IntEncoding::u32_size(idx);
+        // let bytes = O::LengthEncoding::u32_size(idx);
         self.add_raw(bytes)
     }
 
     fn add_len(&mut self, len: usize) -> Result<()> {
-        let bytes = O::IntEncoding::len_size(len);
+        // let bytes = O::IntEncoding::len_size(len);
+        let bytes = O::LengthEncoding::len_size(len);
         self.add_raw(bytes)
     }
 }
