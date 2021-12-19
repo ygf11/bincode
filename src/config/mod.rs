@@ -164,14 +164,18 @@ pub trait Options: InternalOptions + Sized {
         WithOtherIntEncoding::new(self)
     }
 
-    /// Sets the seq/array/map length encoding to be varint
-    fn with_varint_length_encoding(self) -> WithOtherLengthEncoding<Self, VarintEncoding> {
-        WithOtherLengthEncoding::new(self)
+    /// Sets the encoding of seq/array/map length and enum offset to varint
+    fn with_varint_length_offset_encoding(
+        self,
+    ) -> WithOtherLengthOffsetEncoding<Self, VarintEncoding> {
+        WithOtherLengthOffsetEncoding::new(self)
     }
 
-    /// Sets the seq/array/map length encoding to be varint
-    fn with_fixint_length_encoding(self) -> WithOtherLengthEncoding<Self, FixintEncoding> {
-        WithOtherLengthEncoding::new(self)
+    /// Sets the encoding of seq/array/map length and enum offset to fixint
+    fn with_fixint_length_offset_encoding(
+        self,
+    ) -> WithOtherLengthOffsetEncoding<Self, FixintEncoding> {
+        WithOtherLengthOffsetEncoding::new(self)
     }
 
     /// Sets the deserializer to reject trailing bytes
@@ -312,7 +316,7 @@ pub struct WithOtherTrailing<O: Options, T: TrailingBytes> {
 
 /// A configuration struct with a user-specified trailing bytes behavior.
 #[derive(Clone, Copy)]
-pub struct WithOtherLengthEncoding<O: Options, I: IntEncoding> {
+pub struct WithOtherLengthOffsetEncoding<O: Options, I: IntEncoding> {
     options: O,
     _length_encoding: PhantomData<I>,
 }
@@ -357,10 +361,10 @@ impl<O: Options, T: TrailingBytes> WithOtherTrailing<O, T> {
     }
 }
 
-impl<O: Options, I: IntEncoding> WithOtherLengthEncoding<O, I> {
+impl<O: Options, I: IntEncoding> WithOtherLengthOffsetEncoding<O, I> {
     #[inline(always)]
-    pub(crate) fn new(options: O) -> WithOtherLengthEncoding<O, I> {
-        WithOtherLengthEncoding {
+    pub(crate) fn new(options: O) -> WithOtherLengthOffsetEncoding<O, I> {
+        WithOtherLengthOffsetEncoding {
             options,
             _length_encoding: PhantomData,
         }
@@ -416,7 +420,7 @@ impl<O: Options, T: TrailingBytes + 'static> InternalOptions for WithOtherTraili
     }
 }
 
-impl<O: Options, I: IntEncoding + 'static> InternalOptions for WithOtherLengthEncoding<O, I> {
+impl<O: Options, I: IntEncoding + 'static> InternalOptions for WithOtherLengthOffsetEncoding<O, I> {
     type Limit = O::Limit;
     type Endian = O::Endian;
     type IntEncoding = O::IntEncoding;

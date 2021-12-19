@@ -57,25 +57,25 @@ where
                 $element,
                 $options
                     .with_fixint_encoding()
-                    .with_fixint_length_encoding()
+                    .with_fixint_length_offset_encoding()
             );
             all_endians!(
                 $element,
                 $options
                     .with_fixint_encoding()
-                    .with_varint_length_encoding()
+                    .with_varint_length_offset_encoding()
             );
             all_endians!(
                 $element,
                 $options
                     .with_varint_encoding()
-                    .with_varint_length_encoding()
+                    .with_varint_length_offset_encoding()
             );
             all_endians!(
                 $element,
                 $options
                     .with_varint_encoding()
-                    .with_fixint_length_encoding()
+                    .with_fixint_length_offset_encoding()
             );
         };
     }
@@ -354,26 +354,26 @@ fn too_big_char_deserialize() {
 fn too_big_serialize() {
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(3)
         .serialize(&0u32)
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(4)
         .serialize(&0u32)
         .is_ok());
 
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(LEN_SIZE + 4)
         .serialize(&"abcde")
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(LEN_SIZE + 5)
         .serialize(&"abcde")
         .is_ok());
@@ -399,7 +399,7 @@ fn test_serialized_size_bounded() {
     assert!(
         DefaultOptions::new()
             .with_fixint_encoding()
-            .with_fixint_length_encoding()
+            .with_fixint_length_offset_encoding()
             .with_limit(1)
             .serialized_size(&0u8)
             .unwrap()
@@ -408,7 +408,7 @@ fn test_serialized_size_bounded() {
     assert!(
         DefaultOptions::new()
             .with_fixint_encoding()
-            .with_fixint_length_encoding()
+            .with_fixint_length_offset_encoding()
             .with_limit(2)
             .serialized_size(&0u16)
             .unwrap()
@@ -417,7 +417,7 @@ fn test_serialized_size_bounded() {
     assert!(
         DefaultOptions::new()
             .with_fixint_encoding()
-            .with_fixint_length_encoding()
+            .with_fixint_length_offset_encoding()
             .with_limit(4)
             .serialized_size(&0u32)
             .unwrap()
@@ -426,7 +426,7 @@ fn test_serialized_size_bounded() {
     assert!(
         DefaultOptions::new()
             .with_fixint_encoding()
-            .with_fixint_length_encoding()
+            .with_fixint_length_offset_encoding()
             .with_limit(8)
             .serialized_size(&0u64)
             .unwrap()
@@ -435,7 +435,7 @@ fn test_serialized_size_bounded() {
     assert!(
         DefaultOptions::new()
             .with_fixint_encoding()
-            .with_fixint_length_encoding()
+            .with_fixint_length_offset_encoding()
             .with_limit(8)
             .serialized_size(&"")
             .unwrap()
@@ -444,7 +444,7 @@ fn test_serialized_size_bounded() {
     assert!(
         DefaultOptions::new()
             .with_fixint_encoding()
-            .with_fixint_length_encoding()
+            .with_fixint_length_offset_encoding()
             .with_limit(8 + 1)
             .serialized_size(&"a")
             .unwrap()
@@ -453,7 +453,7 @@ fn test_serialized_size_bounded() {
     assert!(
         DefaultOptions::new()
             .with_fixint_encoding()
-            .with_fixint_length_encoding()
+            .with_fixint_length_offset_encoding()
             .with_limit(LEN_SIZE + 3 * 4)
             .serialized_size(&vec![0u32, 1u32, 2u32])
             .unwrap()
@@ -462,43 +462,43 @@ fn test_serialized_size_bounded() {
     // Below
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(0)
         .serialized_size(&0u8)
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(1)
         .serialized_size(&0u16)
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(3)
         .serialized_size(&0u32)
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(7)
         .serialized_size(&0u64)
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(7)
         .serialized_size(&"")
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(8 + 0)
         .serialized_size(&"a")
         .is_err());
     assert!(DefaultOptions::new()
         .with_fixint_encoding()
-        .with_fixint_length_encoding()
+        .with_fixint_length_offset_encoding()
         .with_limit(8 + 3 * 4 - 1)
         .serialized_size(&vec![0u32, 1u32, 2u32])
         .is_err());
