@@ -4,7 +4,8 @@
     "push": {
       "branches": [
         "trunk",
-        "v*.x"
+        "v*.x",
+        "dev-tmp"
       ]
     },
     "pull_request": {
