@@ -169,7 +169,7 @@ where
 
     fn get_byte_buffer(&mut self, length: usize) -> Result<Vec<u8>> {
         self.fill_buffer(length)?;
-        Ok(::std::mem::replace(&mut self.temp_buffer, Vec::new()))
+        Ok(::std::mem::take(&mut self.temp_buffer))
     }
 
     fn forward_read_bytes<V>(&mut self, length: usize, visitor: V) -> Result<V::Value>

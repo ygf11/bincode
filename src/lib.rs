@@ -27,7 +27,6 @@
 #![doc(html_root_url = "https://docs.rs/bincode/1.3.3")]
 #![crate_name = "bincode"]
 #![crate_type = "rlib"]
-#![crate_type = "dylib"]
 
 #[macro_use]
 extern crate serde;
